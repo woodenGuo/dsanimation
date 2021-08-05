@@ -8,6 +8,24 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="menu_list">List</string>
+    <string name="menu_tree">Tree</string>
+    <string name="menu_graph">Graph</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_sort">Sort</string>
+
+    <string name="list_linkedlist">linked list</string>
+    <string name="list_stack">stack</string>
+    <string name="list_queue">queue</string>
+
+    <string name="tree_bt">binary tree</string>
+    <string name="tree_pre_trav">preorder traverse</string>
+    <string name="tree_in_trav">inorder traverse</string>
+    <string name="tree_post_trav">postorder traverse</string>
+    <string name="tree_huffman">huffman tree</string>
+    <string name="tree_bst">binary search tree</string>
+
+    <string name="graph_bfs">BFS</string>
+    <string name="graph_dfs">DFS</string>
 </resources>
