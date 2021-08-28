@@ -4,16 +4,19 @@
 
     <application
         android:allowBackup="true"
+        android:fitsSystemWindows="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dsanimation">
         <activity
+            android:name=".AlgorithmActivity"
+            android:theme="@style/Theme.Dsanimation.NoActionBar"
+            ></activity>
+        <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name"
-
+            android:label="算法与数据结构"
             android:theme="@style/Theme.Dsanimation.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

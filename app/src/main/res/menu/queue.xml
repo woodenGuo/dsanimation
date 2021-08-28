@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/q_seq"
+        android:title="顺序队列"/>
+    <item
+        android:id="@+id/q_ring"
+        android:title="环形队列"/>
+    <item
+        android:id="@+id/q_linked"
+        android:title="链式队列"/>
+
+</menu>

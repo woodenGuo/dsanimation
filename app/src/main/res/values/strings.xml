@@ -9,16 +9,24 @@
 
     <string name="menu_home">Home</string>
 
-    <string name="menu_list">List</string>
-    <string name="menu_tree">Tree</string>
-    <string name="menu_graph">Graph</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_sort">Sort</string>
-
+    <string name="menu_linear_list">Linear List</string>
     <string name="list_linkedlist">linked list</string>
-    <string name="list_stack">stack</string>
-    <string name="list_queue">queue</string>
+    <string name="list_single">single linked list</string>
+    <string name="list_double">double linked list</string>
+    <string name="list_seq">sequence list</string>
+    <string name="label_list_seq">顺序表</string>
+    <string name="label_list_single">单链表</string>
+    <string name="label_list_double">双链表</string>
 
+    <string name="menu_stack">Stack</string>
+    <string name="stack_sequence">seqstack</string>
+    <string name="stack_linkedlist">linkedstack</string>
+
+    <string name="menu_queue">Queue</string>
+    <string name="queue_sequence">sequeue</string>
+    <string name="queue_linkedlist">linkedqueue</string>
+
+    <string name="menu_tree">Tree</string>
     <string name="tree_bt">binary tree</string>
     <string name="tree_pre_trav">preorder traverse</string>
     <string name="tree_in_trav">inorder traverse</string>
@@ -26,6 +34,11 @@
     <string name="tree_huffman">huffman tree</string>
     <string name="tree_bst">binary search tree</string>
 
+    <string name="menu_graph">Graph</string>
     <string name="graph_bfs">BFS</string>
     <string name="graph_dfs">DFS</string>
+
+    <string name="menu_search">Search</string>
+
+    <string name="menu_sort">Sort</string>
 </resources>

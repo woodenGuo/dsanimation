@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ll_notion">"(a<sup>1</sup>, a<sup>2</sup>,…, a<sup>n-1</sup>, a<sup>n</sup>)"</string>
+    <string name="algs_ll_def">线性表. 具有相同数据类型的n(≥0)个元素组成的有限序列。记为:</string>
+    <string name="algs_ll_def_index">顺序表. 线性表采用一组地址连续的存储单元(数组)依次存储线性表的数据元素。\n示例如下:</string>
+    <string name="ds_def_notation">记号</string>
+    <string name="ds_def">定义</string>
+
+    <string name="def_insert_text">插入</string>
+    <string name="algs_ll_seq_insert">过程. 将元素插入到表中第i个位置(索引)处，后面的元素依次向后移动一个单元。</string>
+    <string name="def_delete_text">删除</string>
+    <string name="algs_ll_seq_delete">过程. 将表中第i个位置(索引)处的元素删除，后面的元素依次向前移动一个单元。</string>
+</resources>

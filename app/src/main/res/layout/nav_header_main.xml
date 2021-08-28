@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    android:background="@color/design_default_color_primary"
+    android:background="@color/dsblue"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView

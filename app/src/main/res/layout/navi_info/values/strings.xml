@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_menu_list">线性表</string>
+    <string name="main_menu_queue">队列</string>
+    <string name="main_menu_stack">栈</string>
+    <string name="main_menu_tree">树</string>
+    <string name="main_menu_graph">图</string>
+    <string name="main_menu_serach">查找</string>
+    <string name="main_menu_sort">排序</string>
+    <string name="title_activity_test">TestAct</string>
+
+</resources>

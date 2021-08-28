@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="header1">22sp</dimen>
+    <dimen name="text">18sp</dimen>
+    <dimen name="text_highligt">20sp</dimen>
+</resources>
