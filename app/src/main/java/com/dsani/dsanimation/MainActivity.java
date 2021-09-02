@@ -41,7 +41,7 @@ public class MainActivity extends FullScreenActivity implements View.OnClickList
     private ExpandableMenuAdapter mExpandableMenuAdapter;
     private List<String> mNaviListTitle;
     private HashMap<String, List<String>> mNaviListDataItems;
-    private LinearLayout menuLL, menuQ;
+    private LinearLayout menuLL, menuQ, menuStk;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +67,18 @@ public class MainActivity extends FullScreenActivity implements View.OnClickList
         menuLL = findViewById(R.id.list);
         menuLL.setOnTouchListener(this);
 
+        menuQ = findViewById(R.id.queue);
+        menuQ.setOnTouchListener(this);
+
+        menuStk = findViewById(R.id.stack);
+        menuStk.setOnTouchListener(this);
+
+
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        // set home main menu click animation
         if(event.getAction()==MotionEvent.ACTION_DOWN) {
             v.setBackground(getResources().getDrawable(R.drawable.main_menu_pressed_style));
         }
@@ -91,6 +99,9 @@ public class MainActivity extends FullScreenActivity implements View.OnClickList
                 break;
             case R.id.queue:
                 showPopupMenu(v, R.menu.queue);
+                break;
+            case R.id.stack:
+                showPopupMenu(v, R.menu.stack);
                 break;
             default:
         }
@@ -113,6 +124,20 @@ public class MainActivity extends FullScreenActivity implements View.OnClickList
                 AlgorithmActivity.startAlgsActivity(MainActivity.this,
                                                     getResources().getString(R.string.label_list_seq),
                                                     R.layout.ll_seq);
+                break;
+                //Q
+            case R.id.q_seq:
+                AlgorithmActivity.startAlgsActivity(MainActivity.this,
+                        getResources().getString(R.string.label_queue_seq),
+                        R.layout.q_seq);
+                break;
+                //STK
+            case R.id.stk_seq:
+                AlgorithmActivity.startAlgsActivity(MainActivity.this,
+                        getResources().getString(R.string.label_stack_seq),
+                        R.layout.stk_seq);
+                break;
+
         }
         return false;
     }
@@ -132,14 +157,32 @@ public class MainActivity extends FullScreenActivity implements View.OnClickList
                 String title = mNaviListTitle.get(groupPosition);
                 String item = mNaviListDataItems.get(mNaviListTitle.get(groupPosition)).get(childPosition);
                 switch (title){
-                    case "List":
+                    case "Linear List":
                         switch (item){
-                            case "linked list":
-
-
+                            case "sequence list":
+                                AlgorithmActivity.startAlgsActivity(MainActivity.this,
+                                        getResources().getString(R.string.label_list_seq),
+                                        R.layout.ll_seq);
                             break;
                         }
+                    case "Queue":
+                        switch (item){
+                            case "sequeue":
+                                AlgorithmActivity.startAlgsActivity(MainActivity.this,
+                                        getResources().getString(R.string.label_queue_seq),
+                                        R.layout.q_seq);
+                                break;
+                        }
                     break;
+                    case "Stack":
+                        switch (item){
+                            case "seqstack":
+                                AlgorithmActivity.startAlgsActivity(MainActivity.this,
+                                        getResources().getString(R.string.label_stack_seq),
+                                        R.layout.stk_seq);
+                                break;
+                        }
+                        break;
                 }
                 mDrawerLayout.closeDrawers();
                 return true;

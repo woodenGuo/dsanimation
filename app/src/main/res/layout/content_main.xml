@@ -35,7 +35,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
 
-                android:background="@drawable/seql_ic_launcher"
+                android:background="@drawable/ic_seq"
                 android:clickable="false" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:clickable="false"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/list"/>
+                android:background="@drawable/ic_queue"/>
             <TextView
                 android:clickable="false"
                 android:layout_width="match_parent"
@@ -79,6 +79,9 @@
 
         <LinearLayout
             android:id="@+id/stack"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -89,7 +92,7 @@
                 android:clickable="false"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/list"/>
+                android:background="@drawable/ic_stack"/>
             <TextView
                 android:clickable="false"
                 android:layout_width="match_parent"
@@ -103,6 +106,9 @@
 
         <LinearLayout
             android:id="@+id/tree"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -151,6 +157,9 @@
 
         <LinearLayout
             android:id="@+id/search"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -175,6 +184,9 @@
 
         <LinearLayout
             android:id="@+id/sort"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

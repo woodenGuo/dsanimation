@@ -21,10 +21,16 @@
     <string name="menu_stack">Stack</string>
     <string name="stack_sequence">seqstack</string>
     <string name="stack_linkedlist">linkedstack</string>
+    <string name="label_stack_seq">顺序栈</string>
+    <string name="label_stack_linked">链式栈</string>
 
     <string name="menu_queue">Queue</string>
     <string name="queue_sequence">sequeue</string>
     <string name="queue_linkedlist">linkedqueue</string>
+    <string name="label_queue_seq">顺序队列</string>
+    <string name="label_queue_linked">链式队列</string>
+    <string name="label_queue_ring">环形队列</string>
+
 
     <string name="menu_tree">Tree</string>
     <string name="tree_bt">binary tree</string>

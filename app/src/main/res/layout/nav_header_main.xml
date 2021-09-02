@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/nav_header_spacing"
+    android:paddingTop="@dimen/nav_header_spacing"
     android:paddingBottom="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:background="@color/dsblue"
@@ -13,5 +13,5 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ds_ic_launcher" />
 </LinearLayout>

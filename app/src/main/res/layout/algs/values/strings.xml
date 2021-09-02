@@ -17,4 +17,17 @@
     <string name="algs_ll_seq_set">修改. 通过索引i直接修改第i个单元的数据。</string>
     <string name="def_set_text">修改</string>
     <string name="def_get_text">查询</string>
+
+    <string name="algs_q_def_text">队列.一种特殊的线性表，只允许在一端(队头)进行插入操作，而在另一端(队尾)进行删除操作，故被称为“先进先出(FirstInFirstOut,FIFO)表”。</string>
+    <string name="algs_seqq_def_text">顺序队列. 采用一组地址连续的存储单元(数组)实现的队列。</string>
+    <string name="algs_q_insert_text">入队enqueue. 插入操作，将元素插入到队尾。</string>
+    <string name="algs_q_del_text">出队dequeue. 删除操作，将元素从队头移除。</string>
+    <string name="algs_stk_def_text">栈. 一种特殊的线性表，只允许在线性表的一端(栈顶)进行插入和删除操作，故被称为“后入先出(LastInFirstOut,LIFO)表”。</string>
+    <string name="algs_seqstk_def_text">顺序栈. 采用一组地址连续的存储单元(数组)实现的栈。</string>
+    <string name="algs_stk_insert_text">入栈enqueue. 插入操作，将元素插入到栈顶。</string>
+    <string name="algs_stk_del_text">出栈dequeue. 删除操作，将元素从栈顶删除。</string>
+    <string name="algs_insert_q_text">入队</string>
+    <string name="algs_del_q_text">出队</string>
+    <string name="algs_insert_stk_text">入栈</string>
+    <string name="algs_del_stk_text">出栈</string>
 </resources>
