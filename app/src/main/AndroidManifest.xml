@@ -11,9 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dsanimation">
         <activity
+            android:name=".FullScreenActivity"
+            android:exported="true" />
+        <activity
             android:name=".AlgorithmActivity"
-            android:theme="@style/Theme.Dsanimation.NoActionBar"
-            ></activity>
+            android:theme="@style/Theme.Dsanimation.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="算法与数据结构"

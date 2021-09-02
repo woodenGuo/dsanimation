@@ -33,8 +33,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/ds_def">
+                android:orientation="vertical">
                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -43,6 +42,7 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:textSize="@dimen/header1"
+                    android:padding="@dimen/textview_padding"
                     android:textColor="#000000"
                     />
                 <TextView
@@ -57,7 +57,7 @@
                     android:textStyle="italic"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ds_def_notation"
                     android:gravity="center"
@@ -98,13 +98,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/ds_insert">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ds_insert_text"
-                    android:text="@string/def_insert_text"
+                    android:id="@+id/ds_CD_text"
+                    android:text="@string/def_CD_text"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="12dp"
                     android:textSize="@dimen/header1"
@@ -121,40 +120,6 @@
                     android:textSize="@dimen/text"
                     android:textStyle="italic"
                     />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:id="@+id/ds_insert_img"
-                    android:layout_margin="@dimen/activity_vertical_margin"
-                    />
-                <Button
-                    android:id="@+id/btn_llseq_insert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@color/lightblue"
-                    android:text="@string/def_insert_text"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider"
-                    android:background="@color/diviergray"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/ds_delete">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ds_delete_text"
-                    android:text="@string/def_delete_text"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:textSize="@dimen/header1"
-                    android:textColor="#000000"
-                    />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,24 +131,122 @@
                     android:textSize="@dimen/text"
                     android:textStyle="italic"
                     />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
-                    android:id="@+id/ds_delete_img"
+                    android:id="@+id/ds_CD_img"
                     android:layout_margin="@dimen/activity_vertical_margin"
                     />
-                <Button
-                    android:id="@+id/btn_llseq_delete"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@color/lightblue"
-                    android:text="@string/def_delete_text"/>
+                    android:orientation="horizontal">
+                    <Button
+                        android:onClick="onClick"
+                        android:id="@+id/btn_insert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/view_vertical_margin"
+                        android:background="@color/dsblue"
+                        android:text="@string/def_insert_text"/>
+
+                    <Button
+                        android:id="@+id/btn_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="@color/deepgray"
+                        android:layout_marginLeft="@dimen/view_vertical_margin"
+                        android:onClick="onClick"
+                        android:text="@string/def_delete_text" />
+                </LinearLayout>
                 <View
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider"
                     android:background="@color/diviergray"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ds_UR_text"
+                    android:text="@string/def_UR_text"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:textSize="@dimen/header1"
+                    android:textColor="#000000"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:id="@+id/ds_get_content"
+                    android:text="@string/algs_ll_seq_get"
+                    android:textSize="@dimen/text"
+                    android:textStyle="italic"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:id="@+id/ds_set_content"
+                    android:text="@string/algs_ll_seq_set"
+                    android:textSize="@dimen/text"
+                    android:textStyle="italic"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:id="@+id/ds_UR_img"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:onClick="onClick"
+                        android:id="@+id/btn_get"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/view_vertical_margin"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/dsblue"
+                        android:text="@string/def_get_text"/>
+
+<!--                    <Button-->
+<!--                        android:id="@+id/btn_set"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:layout_marginLeft="@dimen/view_vertical_margin"-->
+<!--                        android:background="@color/deepgray"-->
+<!--                        android:onClick="onClick"-->
+<!--                        android:text="@string/def_set_text" />-->
+                </LinearLayout>
+                <View
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider"
+                    android:background="@color/diviergray"/>
+            </LinearLayout>
+
+
+
 
         </LinearLayout>
     </ScrollView>

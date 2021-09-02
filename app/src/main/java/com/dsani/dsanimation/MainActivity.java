@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+public class MainActivity extends FullScreenActivity implements View.OnClickListener,
                                                                 View.OnTouchListener,
                                                                 PopupMenu.OnMenuItemClickListener{
     private DrawerLayout mDrawerLayout;
@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
-
-        //full screen
-        hideSystemUI();
 
         //setup navigation drawer menu
         mNaviListDataItems = ExpandableListDataItems.initNaviMenuData(this);
@@ -158,36 +155,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * hide status and navi bar
-     * @called in onWindowsFocusChanged()
-     */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void hideSystemUI(){
-        //support display cutout
-        if (Build.VERSION.SDK_INT >= 28) {
-            WindowManager.LayoutParams params = getWindow().getAttributes();
-            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-            getWindow().setAttributes(params);
-        }
-
-        // status bar transparent
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-
-        //set navigationbar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setNavigationBarColor(Color.TRANSPARENT);
-
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-        }
-
     }
 }

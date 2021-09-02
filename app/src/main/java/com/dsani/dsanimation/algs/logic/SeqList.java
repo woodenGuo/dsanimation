@@ -26,10 +26,20 @@ public class SeqList<Item> implements Iterable<Item> {
         size++;
     }
 
+    public void add(Item item){
+        seq.add(item);
+        size++;
+    }
+
     public Item get(int index){
         return seq.get(index);
     }
-    public void remove(Item item, int index){
+
+    public void set(Item item, int index){
+        seq.set(index, item);
+    }
+
+    public void remove(int index){
         seq.remove(index);
         size--;
     }

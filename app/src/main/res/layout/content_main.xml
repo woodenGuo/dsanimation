@@ -29,11 +29,15 @@
             android:id="@+id/list"
             android:onClick="onClick"
             >
+
+
             <ImageView
-                android:clickable="false"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/list"/>
+
+                android:background="@drawable/seql_ic_launcher"
+                android:clickable="false" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
