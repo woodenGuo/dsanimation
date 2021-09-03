@@ -38,6 +38,7 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
     private int layoutResId;
     private Toolbar mToolbar;
     private ImageView defImgView, CDImgView, URImgView;
+    private EditText setEditText, getEditText;
     private Button btnAdd, btnDel;
     private AlgorithmVisualizer<Integer> visualizerDef, visualizerCD, visualizerUR;
 
@@ -73,6 +74,8 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                defImgView = findViewById(R.id.ds_def_img);
                CDImgView = findViewById(R.id.ds_CD_img);
                URImgView = findViewById(R.id.ds_UR_img);
+               getEditText = findViewById(R.id.edit_llseq_get);
+               setEditText = findViewById(R.id.edit_llseq_set);
                /**
                 note: width is unkown until  during onCreate() executed time.
                 sol_1: call in other time
@@ -95,6 +98,7 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+        String text;
         switch (v.getId()){
             case R.id.btn_delete:
                 visualizerCD.setup(AlgorithmVisualizer.OPERATION.DELETE);
@@ -103,19 +107,26 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                 visualizerCD.setup(AlgorithmVisualizer.OPERATION.INSERT);
                 break;
             case R.id.btn_get:
-                final EditText editText = new EditText(this);
-                AlertDialog.Builder inputDialog =
-                        new AlertDialog.Builder(this);
-                inputDialog.setTitle("输入索引").setView(editText);
-                inputDialog.setPositiveButton("确定",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Toast.makeText(AlgorithmActivity.this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
-                                int idx = Integer.parseInt(editText.getText().toString()) ;
-                                visualizerUR.setup(AlgorithmVisualizer.OPERATION.GET, idx, 0 );
-                            }
-                        }).show();
+                text = getEditText.getText().toString();
+                if (!DataUtil.isInteger(text)){
+                    Toast.makeText(this,"请按正确格式输入", Toast.LENGTH_SHORT).show();
+                    break;
+                };
+                visualizerUR.setup(AlgorithmVisualizer.OPERATION.GET, Integer.parseInt(text), 0 );
+                break;
+            case R.id.btn_set:
+                text = setEditText.getText().toString();
+                if (!text.contains(",")) {
+                    Toast.makeText(this,"请按正确格式输入", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                if (!DataUtil.isInteger(text.split(",")[0]) && !DataUtil.isInteger(text.split(",")[1]) ){
+                    Toast.makeText(this,"请按正确格式输入", Toast.LENGTH_SHORT).show();
+                    break;
+                };
+                visualizerUR.setup(AlgorithmVisualizer.OPERATION.SET, Integer.parseInt(text.split(",")[0]),
+                        Integer.parseInt(text.split(",")[1]));
+                break;
 
             default:
                 break;

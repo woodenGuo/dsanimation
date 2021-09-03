@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -16,10 +15,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.util.Pair;
-import android.view.View;
 
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -34,7 +30,6 @@ import com.dsani.dsanimation.algs.AlgorithmVisualizer;
 import com.dsani.dsanimation.algs.logic.SeqList;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 
@@ -48,12 +43,13 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     private static final int RECT_X_OFFSET = 100; //element rect length
     private static final int RECT_Y_OFFSET = 100;
     private static final int VIEW_GAP_OFFSET = 70;//gap to view hold this seqlistview
+    private static final int ANIM_DURATION = 2500;
     private int mInitElementSize;
 
     private float mCDElementX, mCDElementY; //from(C)/to(D) Y coordinator of new/deleted element
     private int mOpsIdx;
     private static final int SEQ_ELEMNT_GAP_OFFSET = 5; //element gap
-    private SeqList mSeqList;
+    private SeqList<Integer> mSeqList;
     private OPERATION mOps;
     private int startX; //init coordinator x of seq
     private ArrayList<Rect> mRects;
@@ -66,8 +62,8 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     private Paint mPaintText;
     private Paint mPaintTextNote;
 
-
     private Paint mPaintCD;
+    private Paint mPaintUR;
     private ValueAnimator mCDAnimator;
     private String mTextNote;
     private Paint mPainPath;
@@ -97,12 +93,12 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
         init();
 
         mAnimator = ValueAnimator.ofFloat(0f, 1f);
-        mAnimator.setDuration(2500);
+        mAnimator.setDuration(ANIM_DURATION);
         mCDAnimator = ObjectAnimator.ofInt( mPaintCD, "color", (0x88<<24) | mContext.getResources().getColor(R.color.rectgrayfill),
                 (0x88<<24) | mContext.getResources().getColor(R.color.dsblue),
                 (0x88<<24) | mContext.getResources().getColor(R.color.rectgrayfill));
         mCDAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
-        mCDAnimator.setDuration(2500);
+        mCDAnimator.setDuration(ANIM_DURATION);
 
         setElement( 0f, 0f, -1, 0f);
         setText();
@@ -135,6 +131,12 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
         mPaintCD.setColor(mContext.getResources().getColor(R.color.rectgrayfill));
         mPaintCD.setStyle(Paint.Style.FILL);
 
+        mPaintUR = new Paint();
+        mPaintUR.setTextSize(TEXT_SIZE);
+        mPaintUR.setColor(mContext.getResources().getColor(R.color.black));
+        mPaintUR.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
+        mPaintUR.setAntiAlias(true);
+        mPaintUR.setTextAlign(Paint.Align.CENTER);
     }
 
     @Override
@@ -172,45 +174,57 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
             case GET:
                 get(mOpsIdx);
                 break;
-            case INSERT:
+            case SET:
+                update();
                 break;
             default:
                 break;
 
         }
-//        ValueAnimator textSizeAnimator = ObjectAnimator.ofFloat(mPaintText, "textSize", TEXT_SIZE, (float) (1.5 * TEXT_SIZE));
-//        ValueAnimator textColorAnimator = ObjectAnimator.ofInt( mPaintText, "color", (0xFF<<24) | mContext.getResources().getColor(R.color.black),
-//                                                                             (0x00<<24) | mContext.getResources().getColor(R.color.black));
-//        ValueAnimator newTextSizeAnimator = ObjectAnimator.ofFloat(mPaintText, "textSize",  (float) (1.5 * TEXT_SIZE), TEXT_SIZE, TEXT_SIZE);
-//        ValueAnimator newTextColorAnimator = ObjectAnimator.ofInt( mPaintText, "color", (0x00<<24) | mContext.getResources().getColor(R.color.black),
-//                                                                     (0xFF<<24) | mContext.getResources().getColor(R.color.black));
-//
-//        textColorAnimator.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                set(mOpsIdx, mOpsNodeVal);
-//                AnimatorSet animatorSet = new AnimatorSet();
-//                animatorSet.play(newTextSizeAnimator).with(newTextColorAnimator);
-//
-//            }
-//        });
-//
-//        textSizeAnimator.addUpdateListener(animation -> {
-//            mImgView.invalidate();
-//        });
-//
-//        newTextSizeAnimator.addUpdateListener(animation -> {
-//            mImgView.invalidate();
-//        });
-//
-//        AnimatorSet animatorSet = new AnimatorSet();
-//        animatorSet.play(textSizeAnimator).with(textColorAnimator);
+
 
     }
 
     @Override
     public void update(){
+        ValueAnimator textSizeAnimator = ObjectAnimator.ofFloat(mPaintUR, "textSize",
+                TEXT_SIZE, (float) (1.5 * TEXT_SIZE));
+        ValueAnimator textColorAnimator = ObjectAnimator.ofInt(mPaintUR, "color",
+                (0x00<<24) | 0x000000, //TODO. R.color.black has som problem
+                (0xff<<24) | 0x000000);
+        ValueAnimator newTextSizeAnimator = ObjectAnimator.ofFloat(mPaintUR, "textSize",
+                (float) (1.5 * TEXT_SIZE), TEXT_SIZE);
+        ValueAnimator newTextColorAnimator = ObjectAnimator.ofInt(mPaintUR, "color",
+                (0xff<<24) | 0x000000,
+                (0x00<<24) | 0x000000);
+
+        textColorAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
+        newTextColorAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
+
+        textColorAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                set(mOpsIdx, mOpsNodeVal);
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.play(newTextSizeAnimator).with(newTextColorAnimator);
+                animatorSet.setDuration(ANIM_DURATION);
+                animatorSet.start();
+            }
+        });
+
+        textColorAnimator.addUpdateListener(animation -> {
+            mImgView.invalidate();
+        });
+
+        newTextColorAnimator.addUpdateListener(animation -> {
+            mImgView.invalidate();
+        });
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(textSizeAnimator).with(textColorAnimator);
+        animatorSet.setDuration(ANIM_DURATION);
+        animatorSet.start();
     }
 
     @Override
@@ -227,8 +241,9 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
 
     /**
      *  adapter? => modify interface on 8/30/2021
-     * @note. maybe other algs/ds needs different args to realize the animation
+     * @note. 1. maybe other algs/ds needs different args to realize the animation
      *        so call this one in interface @setElement()
+     *        2. @case DELETE. NODE DELETED BEFORE UPDATE COORD OF THE LIST, COORD WAS SAVED IN PAIR
      * @param: index. cd element, if index is -1, means no element to be CD.
      * @param deltaX, end point - begint point, for element which is After CD element.
      *               '+' => right forward => C
@@ -236,6 +251,7 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
      *        deltaY, for CD element
      *               '-' => up => D
      *                '+' => down => C
+     *
      */
     @Override
     public void setElement(float deltaX, float deltaY, int index, float valAnimator){
@@ -272,18 +288,12 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
             Rect rect = new Rect(left, top, right, bottom);
             mOpsNode = new Pair<>(rect, mOpsNodeVal);
         }else if (mOps == OPERATION.INSERT && index != -1){
-            mOpsNode = new Pair<>(mRects.get(mOpsIdx), (Integer)mSeqList.get(mOpsIdx));
+            mOpsNode = new Pair<>(mRects.get(mOpsIdx), mSeqList.get(mOpsIdx));
         }
     }
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        if (mOps == OPERATION.GET) {
-            canvas.drawText(mSeqList.get(mOpsIdx).toString(), mRects.get(mOpsIdx).centerX(),
-                    mRects.get(mOpsIdx).exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintText);
-            return;
-        }
-
         if (mOpsNode != null && mOps == OPERATION.DELETE){
             canvas.drawRect(mOpsNode.first, mPaintCD);
             canvas.drawRect(mOpsNode.first, mPaintRect);
@@ -292,19 +302,25 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
         }
 
         for(int i = 0; i < mSeqList.size(); i++){
-
             canvas.drawRect(mRects.get(i), mPaintRectFill);
             canvas.drawRect(mRects.get(i), mPaintRect);
+            if(i == mOpsIdx && mOps != OPERATION.GET) continue;
             canvas.drawText(mSeqList.get(i).toString(), mRects.get(i).centerX(),
-                         mRects.get(i).exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintText);
-
+                    mRects.get(i).exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintText);
         }
+
         if (mOpsNode != null && mOps == OPERATION.INSERT) {
             canvas.drawRect(mOpsNode.first, mPaintCD);
             canvas.drawRect(mOpsNode.first, mPaintRect);
             canvas.drawText(mOpsNode.second.toString(), mOpsNode.first.centerX(),
                     mOpsNode.first.exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintText);
         }
+
+        if (mOps == OPERATION.SET) {
+            canvas.drawText(mSeqList.get(mOpsIdx).toString(), mRects.get(mOpsIdx).centerX(),
+                    mRects.get(mOpsIdx).exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintUR);;
+        }
+
         if (mSeqList.size() == 0) mTextNote = "空空如也";
         canvas.drawText(mTextNote, CANVAS_WIDTH / 2, (float) (VIEW_GAP_OFFSET + 1.8 * RECT_Y_OFFSET), mPaintTextNote);
     }
@@ -340,7 +356,7 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
             return;
         }
         mSeqList.insert(new Random().nextInt(50), mOpsIdx);
-        mOpsNodeVal = (Integer) mSeqList.get(mOpsIdx);
+        mOpsNodeVal = mSeqList.get(mOpsIdx);
         mRects.add(mOpsIdx, new Rect(0, 0, 0, 0));
 
     }
@@ -356,7 +372,7 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
         mOpsIdx = new Random().nextInt(mSeqList.size() - 1);
         if (mOpsIdx == 0) mOpsIdx = 1; //except head and tail
 
-        mOpsNodeVal = (Integer) mSeqList.get(mOpsIdx);
+        mOpsNodeVal = mSeqList.get(mOpsIdx);
         mSeqList.remove(mOpsIdx);
         mRects.remove(mOpsIdx);
 
@@ -373,10 +389,8 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
 
     @Override
     public void set(int index, Integer val) {
-
+      mSeqList.set(val, index);
     }
-
-
 
     @Override
     public void setAlpha(int alpha) {

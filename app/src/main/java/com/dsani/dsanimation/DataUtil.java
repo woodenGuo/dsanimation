@@ -2,6 +2,8 @@ package com.dsani.dsanimation;
 
 import android.animation.TypeEvaluator;
 
+import java.util.regex.Pattern;
+
 public class DataUtil {
     public static class ArgbEvaluator implements TypeEvaluator{
         @Override
@@ -12,7 +14,7 @@ public class DataUtil {
             float startA = ((startInt >> 24) & 0xff) / 255.0f;
             float startR = ((startInt >> 16) & 0xff) / 255.0f;
             float startG = ((startInt >> 8) & 0xff) / 255.0f;
-            float startB = (startInt & 0xff) / 255.0f;//透明度
+            float startB = (startInt & 0xff) / 255.0f;
             /*
              * 结束颜色ARGB颜色通道拆分
              */
@@ -20,7 +22,7 @@ public class DataUtil {
             float endA = ((endInt >> 24) & 0xff) / 255.0f;
             float endR = ((endInt >> 16) & 0xff) / 255.0f;
             float endG = ((endInt >> 8) & 0xff) / 255.0f;
-            float endB = (endInt & 0xff) / 255.0f;//透明度
+            float endB = (endInt & 0xff) / 255.0f;
 
             // 颜色数值线性增加
             startR = (float) Math.pow(startR, 2.2);
@@ -49,4 +51,10 @@ public class DataUtil {
             return Math.round(a) << 24 | Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b);
         }
     }
+
+    public static boolean isInteger(String value) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]+$");
+        return pattern.matcher(value).matches();
+    }
+
 }
