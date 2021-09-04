@@ -32,10 +32,14 @@ public class SeqList<Item> implements Iterable<Item> {
     }
 
     public Item get(int index){
+        if(isEmpty()) throw new NoSuchElementException("list is empty");
+        if (index < 0 || index > (size-1)) throw new NoSuchElementException("index illegal");
         return seq.get(index);
     }
 
     public void set(Item item, int index){
+        if(isEmpty()) throw new NoSuchElementException("list is empty");
+        if (index < 0 || index > (size-1)) throw new NoSuchElementException("index illegal");
         seq.set(index, item);
     }
 

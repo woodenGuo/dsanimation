@@ -167,9 +167,7 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     public void setup(OPERATION ops, int idx, Integer val){
         mOpsNodeVal = val;
         mOps = ops;
-        if (idx < 0) mOpsIdx = 0;
-        else if (idx > mSeqList.size()) mOpsIdx = mSeqList.size();
-        else mOpsIdx = idx;
+        mOpsIdx = idx;
         switch (ops){
             case GET:
                 get(mOpsIdx);
@@ -190,13 +188,13 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
         ValueAnimator textSizeAnimator = ObjectAnimator.ofFloat(mPaintUR, "textSize",
                 TEXT_SIZE, (float) (1.5 * TEXT_SIZE));
         ValueAnimator textColorAnimator = ObjectAnimator.ofInt(mPaintUR, "color",
-                (0x00<<24) | 0x000000, //TODO. R.color.black has som problem
-                (0xff<<24) | 0x000000);
+                mContext.getResources().getColor(R.color.black), //TODO. R.color.black has som problem
+                mContext.getResources().getColor(R.color.rectgrayfill));
         ValueAnimator newTextSizeAnimator = ObjectAnimator.ofFloat(mPaintUR, "textSize",
                 (float) (1.5 * TEXT_SIZE), TEXT_SIZE);
         ValueAnimator newTextColorAnimator = ObjectAnimator.ofInt(mPaintUR, "color",
-                (0xff<<24) | 0x000000,
-                (0x00<<24) | 0x000000);
+                mContext.getResources().getColor(R.color.rectgrayfill),
+                mContext.getResources().getColor(R.color.black));
 
         textColorAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
         newTextColorAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
@@ -381,15 +379,24 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
 
     @Override
     public void get(int index) {
-        if(mSeqList.isEmpty()){
-            Toast.makeText(mContext, "seqlist under flow", Toast.LENGTH_SHORT).show();
+        int val;
+        try {
+            val = mSeqList.get(index);
+        }catch (Exception e){
+            Toast.makeText(mContext, e.getMessage(),Toast.LENGTH_SHORT).show();
+            return;
         }
-        Toast.makeText(mContext, "第" + index + "个元素是" + mSeqList.get(index), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "第" + index + "个元素是" + val, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void set(int index, Integer val) {
-      mSeqList.set(val, index);
+        try {
+            mSeqList.set(val, index);
+        }catch (Exception e){
+            Toast.makeText(mContext, e.getMessage(),Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     @Override
