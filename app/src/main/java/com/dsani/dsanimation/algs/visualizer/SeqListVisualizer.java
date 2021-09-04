@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import android.os.Bundle;
 import android.util.Pair;
 
 import android.widget.ImageView;
@@ -33,26 +34,17 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Integer> {
+public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<Integer> {
 
-    public  static  String Tag = "Sqlist";
-
-    private Context mContext;
-    private int CANVAS_WIDTH;
-    private static final int TEXT_SIZE = 50;
-    private static final int RECT_X_OFFSET = 100; //element rect length
-    private static final int RECT_Y_OFFSET = 100;
-    private static final int VIEW_GAP_OFFSET = 70;//gap to view hold this seqlistview
-    private static final int ANIM_DURATION = 2500;
-    private int mInitElementSize;
-
-    private float mCDElementX, mCDElementY; //from(C)/to(D) Y coordinator of new/deleted element
+    private final Context mContext;
+    private final int CANVAS_WIDTH;
+    private final float mCDElementX;
+    private final float mCDElementY; //from(C)/to(D) Y coordinator of new/deleted element
     private int mOpsIdx;
-    private static final int SEQ_ELEMNT_GAP_OFFSET = 5; //element gap
-    private SeqList<Integer> mSeqList;
+    private final SeqList<Integer> mSeqList;
     private OPERATION mOps;
-    private int startX; //init coordinator x of seq
-    private ArrayList<Rect> mRects;
+
+    private final ArrayList<Rect> mRects;
     private Pair<Rect, Integer> mOpsNode;
     private int mOpsNodeVal;
 
@@ -66,15 +58,11 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     private Paint mPaintUR;
     private ValueAnimator mCDAnimator;
     private String mTextNote;
-    private Paint mPainPath;
-    private Path mPathSeq;
 
     private ValueAnimator mAnimator;
     private ImageView mImgView;
 
-    public SeqListDrawable(Context context, int windowWidth,
-                           ImageView imgView){
-
+    public SeqListVisualizer(Context context, int windowWidth, ImageView imgView){
         mCDElementY = 1.8f * (float) RECT_Y_OFFSET;
         mCDElementX = RECT_X_OFFSET;
         mOpsIdx = -1;
@@ -84,22 +72,12 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
         //init seqlist
         mSeqList = new SeqList<Integer>();
         mRects = new ArrayList<Rect>();
-        mInitElementSize = new Random().nextInt(ELEMENT_MAX_SIZE - ELEMENT_MIN_SIZE) + ELEMENT_MIN_SIZE;
+        int mInitElementSize = new Random().nextInt(ELEMENT_MAX_SIZE - ELEMENT_MIN_SIZE) + ELEMENT_MIN_SIZE;
         for (int i = 0; i < mInitElementSize; i++) {
             mSeqList.insert(new Random().nextInt(50), i);
             mRects.add(i, new Rect(0, 0, 0, 0));
         }
-        startX = (CANVAS_WIDTH -  mSeqList.size() * RECT_X_OFFSET) / 2;
         init();
-
-        mAnimator = ValueAnimator.ofFloat(0f, 1f);
-        mAnimator.setDuration(ANIM_DURATION);
-        mCDAnimator = ObjectAnimator.ofInt( mPaintCD, "color", (0x88<<24) | mContext.getResources().getColor(R.color.rectgrayfill),
-                (0x88<<24) | mContext.getResources().getColor(R.color.dsblue),
-                (0x88<<24) | mContext.getResources().getColor(R.color.rectgrayfill));
-        mCDAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
-        mCDAnimator.setDuration(ANIM_DURATION);
-
         setElement( 0f, 0f, -1, 0f);
         setText();
     }
@@ -140,7 +118,11 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     }
 
     @Override
-    public void setup(OPERATION ops) {
+    public void setup(OPERATION ops, Bundle bundle) {
+        if (bundle != null){
+            mOpsNodeVal = bundle.getInt("val");
+            mOpsIdx = bundle.getInt("index");
+        }
         mOps = ops;
         switch (ops){
             case EX:
@@ -157,21 +139,6 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
             case GET:
                 get(mOpsIdx);
                 break;
-            default:
-                break;
-
-        }
-    }
-
-    @Override
-    public void setup(OPERATION ops, int idx, Integer val){
-        mOpsNodeVal = val;
-        mOps = ops;
-        mOpsIdx = idx;
-        switch (ops){
-            case GET:
-                get(mOpsIdx);
-                break;
             case SET:
                 update();
                 break;
@@ -179,8 +146,6 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
                 break;
 
         }
-
-
     }
 
     @Override
@@ -227,6 +192,15 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
 
     @Override
     public void update(float distanceX, float distanceY){
+        mAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mAnimator.setDuration(ANIM_DURATION);
+        mCDAnimator = ObjectAnimator.ofInt( mPaintCD, "color",
+                (0x88<<24) | mContext.getResources().getColor(R.color.rectgrayfill),
+                (0x88<<24) | mContext.getResources().getColor(R.color.dsblue),
+                (0x88<<24) | mContext.getResources().getColor(R.color.rectgrayfill));
+        mCDAnimator.setEvaluator(new DataUtil.ArgbEvaluator());
+        mCDAnimator.setDuration(ANIM_DURATION);
+
         mAnimator.addUpdateListener(animation -> {
             float valAnimate = (float) mAnimator.getAnimatedValue();
             setElement(distanceX, distanceY, mOpsIdx, valAnimate);
@@ -324,16 +298,6 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     }
 
     @Override
-    public void setElement(){
-
-    }
-
-    @Override
-    public void setPath(){
-
-    }
-
-    @Override
     public void setText() {
         mTextNote = "具有" + String.valueOf(mSeqList.size()) + "个元素的顺序表";
     }
@@ -412,5 +376,10 @@ public class SeqListDrawable extends Drawable implements AlgorithmVisualizer<Int
     @Override
     public int getOpacity() {
         return PixelFormat.OPAQUE;
+    }
+
+    @Override
+    public void setPath(){
+
     }
 }

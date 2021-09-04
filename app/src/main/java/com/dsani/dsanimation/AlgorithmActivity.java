@@ -4,20 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.audiofx.Visualizer;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +25,9 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.dsani.dsanimation.algs.AlgorithmVisualizer;
-import com.dsani.dsanimation.algs.visualizer.SeqListDrawable;
+import com.dsani.dsanimation.algs.visualizer.QueueVisualizer;
+
+import com.dsani.dsanimation.algs.visualizer.SeqListVisualizer;
 
 
 
@@ -41,7 +40,7 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
     private EditText setEditText, getEditText;
     private Button btnAdd, btnDel;
     private AlgorithmVisualizer<Integer> visualizerDef, visualizerCD, visualizerUR;
-
+    private Bundle bundle;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.back);
         }
-
+        bundle = new Bundle();
         setupAlgs(layoutResId);
 
     }
@@ -81,15 +80,25 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                 sol_1: call in other time
                 sol_2: using screen width
                 */
-               visualizerDef = new SeqListDrawable(AlgorithmActivity.this, getResources().getDisplayMetrics().widthPixels,
+               visualizerDef = new SeqListVisualizer(AlgorithmActivity.this, getResources().getDisplayMetrics().widthPixels,
                                                 defImgView);
-               visualizerCD = new SeqListDrawable(AlgorithmActivity.this, getResources().getDisplayMetrics().widthPixels,
+               visualizerCD = new SeqListVisualizer(AlgorithmActivity.this, getResources().getDisplayMetrics().widthPixels,
                        CDImgView);
-               visualizerUR = new SeqListDrawable(AlgorithmActivity.this, getResources().getDisplayMetrics().widthPixels,
+               visualizerUR = new SeqListVisualizer(AlgorithmActivity.this, getResources().getDisplayMetrics().widthPixels,
                        URImgView);
-               visualizerDef.setup(AlgorithmVisualizer.OPERATION.EX);
-               visualizerCD.setup(AlgorithmVisualizer.OPERATION.EX);
-               visualizerUR.setup(AlgorithmVisualizer.OPERATION.EX);
+               visualizerDef.setup(AlgorithmVisualizer.OPERATION.EX, null);
+               visualizerCD.setup(AlgorithmVisualizer.OPERATION.EX, null);
+               visualizerUR.setup(AlgorithmVisualizer.OPERATION.EX, null);
+               break;
+           case R.layout.q_seq:
+               CDImgView = findViewById(R.id.ds_def_img);
+               //Queue EX is supplied by picture.
+               // no need to call setup() with 'OPERATION.EX'
+               visualizerCD = new QueueVisualizer(AlgorithmActivity.this,
+                                                    getResources().getDisplayMetrics().widthPixels,
+                                                    defImgView);
+               break;
+           case R.layout.stk_seq:
                break;
            default:
                break;
@@ -101,10 +110,10 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
         String text;
         switch (v.getId()){
             case R.id.btn_delete:
-                visualizerCD.setup(AlgorithmVisualizer.OPERATION.DELETE);
+                visualizerCD.setup(AlgorithmVisualizer.OPERATION.DELETE, null);
                 break;
             case R.id.btn_insert:
-                visualizerCD.setup(AlgorithmVisualizer.OPERATION.INSERT);
+                visualizerCD.setup(AlgorithmVisualizer.OPERATION.INSERT, null);
                 break;
             case R.id.btn_get:
                 text = getEditText.getText().toString();
@@ -112,7 +121,8 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                     Toast.makeText(this,"请按正确格式输入", Toast.LENGTH_SHORT).show();
                     break;
                 };
-                visualizerUR.setup(AlgorithmVisualizer.OPERATION.GET, Integer.parseInt(text), 0 );
+                bundle.putInt("index", Integer.parseInt(text));
+                visualizerUR.setup(AlgorithmVisualizer.OPERATION.GET, bundle );
                 break;
             case R.id.btn_set:
                 text = setEditText.getText().toString();
@@ -124,8 +134,9 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                     Toast.makeText(this,"请按正确格式输入", Toast.LENGTH_SHORT).show();
                     break;
                 };
-                visualizerUR.setup(AlgorithmVisualizer.OPERATION.SET, Integer.parseInt(text.split(",")[0]),
-                        Integer.parseInt(text.split(",")[1]));
+                bundle.putInt("index", Integer.parseInt(text.split(",")[0]));
+                bundle.putInt("val", Integer.parseInt(text.split(",")[1]));
+                visualizerUR.setup(AlgorithmVisualizer.OPERATION.SET, bundle);
                 break;
 
             default:
@@ -149,8 +160,4 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 }
