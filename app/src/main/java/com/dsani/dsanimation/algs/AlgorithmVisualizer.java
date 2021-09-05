@@ -18,9 +18,9 @@ public interface AlgorithmVisualizer<Item> {
         EX,
         INSERT, DELETE, GET, SET,
         SORT_INS, SORT_SHL,
-        SORT_BUB, SORT_QCK,
+        SORT_BUB, SORT_QUICK,
         SORT_SEL, SORT_HEAP,
-        SORT_MEG,
+        SORT_MERGE,
         PREORDER, INORDER, POSTORDER,
         BFS, DFS,
         HUFFMAN

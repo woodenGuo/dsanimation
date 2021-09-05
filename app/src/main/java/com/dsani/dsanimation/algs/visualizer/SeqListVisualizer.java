@@ -38,6 +38,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
 
     private final Context mContext;
     private final int CANVAS_WIDTH;
+    private final int MAX_SIZE_IN_CANVAS;
     private final float mCDElementX;
     private final float mCDElementY; //from(C)/to(D) Y coordinator of new/deleted element
     private int mOpsIdx;
@@ -67,6 +68,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
         mCDElementX = RECT_X_OFFSET;
         mOpsIdx = -1;
         CANVAS_WIDTH = (int) (windowWidth - 2 * context.getResources().getDimension(R.dimen.activity_horizontal_margin));
+        MAX_SIZE_IN_CANVAS = CANVAS_WIDTH / RECT_X_OFFSET;
         mContext = context;
         mImgView = imgView;
         //init seqlist
@@ -119,6 +121,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
 
     @Override
     public void setup(OPERATION ops, Bundle bundle) {
+
         if (bundle != null){
             mOpsNodeVal = bundle.getInt("val");
             mOpsIdx = bundle.getInt("index");
@@ -218,11 +221,8 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
      *        2. @case DELETE. NODE DELETED BEFORE UPDATE COORD OF THE LIST, COORD WAS SAVED IN PAIR
      * @param: index. cd element, if index is -1, means no element to be CD.
      * @param deltaX, end point - begint point, for element which is After CD element.
-     *               '+' => right forward => C
-     *               '-' => left forward => D
-     *        deltaY, for CD element
-     *               '-' => up => D
-     *                '+' => down => C
+     *                '+' => right forward => C       '-' => left forward => D
+     *        deltaY,'-' => up => D                  '+' => down => C
      *
      */
     @Override
@@ -266,7 +266,8 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        if (mOpsNode != null && mOps == OPERATION.DELETE){
+        //deleted node not in seq_list, is was saved in <Pair> mOpsNode
+        if (mSeqList.size() > 0 && mOpsNode != null && mOps == OPERATION.DELETE){
             canvas.drawRect(mOpsNode.first, mPaintCD);
             canvas.drawRect(mOpsNode.first, mPaintRect);
             canvas.drawText(mOpsNode.second.toString(), mOpsNode.first.centerX(),
@@ -276,7 +277,6 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
         for(int i = 0; i < mSeqList.size(); i++){
             canvas.drawRect(mRects.get(i), mPaintRectFill);
             canvas.drawRect(mRects.get(i), mPaintRect);
-            if(i == mOpsIdx && mOps != OPERATION.GET) continue;
             canvas.drawText(mSeqList.get(i).toString(), mRects.get(i).centerX(),
                     mRects.get(i).exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintText);
         }
@@ -304,6 +304,11 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
 
     @Override
     public void insert() {
+        if(mSeqList.size() == MAX_SIZE_IN_CANVAS ){
+           Toast.makeText(mContext, "canvas cannot hold more", Toast.LENGTH_SHORT).show();
+           return;
+        }
+
         if(mSeqList.isEmpty()){
             mSeqList.add(new Random().nextInt(50));
             mRects.add(0, new Rect(0,0,0,0));
@@ -312,11 +317,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
             return;
         }
         mOpsIdx = new Random().nextInt( mSeqList.size());
-        if((mRects.get(0).left < 50 && mOpsIdx == 0 ) || (mRects.get(mRects.size() - 1).right + 50 > CANVAS_WIDTH && mOpsIdx != 0) ){
-            mOpsIdx = -1;
-            Toast.makeText(mContext, "screen overflow", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         mSeqList.insert(new Random().nextInt(50), mOpsIdx);
         mOpsNodeVal = mSeqList.get(mOpsIdx);
         mRects.add(mOpsIdx, new Rect(0, 0, 0, 0));
@@ -331,9 +332,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
             mOpsIdx = -1;
             return;
         }
-        mOpsIdx = new Random().nextInt(mSeqList.size() - 1);
-        if (mOpsIdx == 0) mOpsIdx = 1; //except head and tail
-
+        mOpsIdx = new Random().nextInt(mSeqList.size());
         mOpsNodeVal = mSeqList.get(mOpsIdx);
         mSeqList.remove(mOpsIdx);
         mRects.remove(mOpsIdx);
