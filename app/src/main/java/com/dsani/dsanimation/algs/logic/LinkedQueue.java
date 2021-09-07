@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Queue<Item> implements Iterable<Item> {
+public class LinkedQueue<Item> implements Iterable<Item> {
     private Node first;
     private Node last;
     private  int n;
@@ -17,7 +17,7 @@ public class Queue<Item> implements Iterable<Item> {
         private Node next;
     }
 
-    public Queue(){
+    public LinkedQueue(){
         first = null;
         last = null;
         n = 0;
@@ -31,16 +31,22 @@ public class Queue<Item> implements Iterable<Item> {
         return  n;
     }
 
-    public Item peek() {
+    public Item first() {
         if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         return first.item;
+    }
+
+    public Item last() {
+        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+        return last.item;
     }
 
     public void enqueue(Item item){
         Node oldLast = last;
         last = new Node();
         last.item = item;
-        oldLast.next = last;
+        last.next = null;
+        // to avoid loitering
         if (isEmpty()) first = last;
         else oldLast.next = last;
         n++;

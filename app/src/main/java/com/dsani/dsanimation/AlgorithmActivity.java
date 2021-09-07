@@ -75,6 +75,8 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                URImgView = findViewById(R.id.ds_UR_img);
                getEditText = findViewById(R.id.edit_llseq_get);
                setEditText = findViewById(R.id.edit_llseq_set);
+               btnAdd = findViewById(R.id.btn_insert);
+               btnDel = findViewById(R.id.btn_delete);
                /**
                 note: width is unkown until  during onCreate() executed time.
                 sol_1: call in other time
@@ -91,12 +93,13 @@ public class AlgorithmActivity extends FullScreenActivity implements View.OnClic
                visualizerUR.setup(AlgorithmVisualizer.OPERATION.EX, null);
                break;
            case R.layout.q_seq:
-               CDImgView = findViewById(R.id.ds_def_img);
+               CDImgView = findViewById(R.id.ds_CD_img);
                //Queue EX is supplied by picture.
                // no need to call setup() with 'OPERATION.EX'
                visualizerCD = new QueueVisualizer(AlgorithmActivity.this,
                                                     getResources().getDisplayMetrics().widthPixels,
-                                                    defImgView);
+                                                     CDImgView);
+               visualizerCD.setup(AlgorithmVisualizer.OPERATION.EX, null);
                break;
            case R.layout.stk_seq:
                break;

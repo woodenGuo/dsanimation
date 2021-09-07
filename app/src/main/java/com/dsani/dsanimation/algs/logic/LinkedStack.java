@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-public class Stack<Item> implements Iterable<Item> {
+public class LinkedStack<Item> implements Iterable<Item> {
 
     private Node first;
     private int n;
@@ -18,7 +18,7 @@ public class Stack<Item> implements Iterable<Item> {
         private Node next;
     }
 
-    public Stack(){
+    public LinkedStack(){
         first = null;
         n = 0;
     }

@@ -55,7 +55,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
     private Paint mPaintText;
     private Paint mPaintTextNote;
 
-    private Paint mPaintCD;
+    private Paint mPaintCD; //todo mPaintC, mPaintD
     private Paint mPaintUR;
     private ValueAnimator mCDAnimator;
     private String mTextNote;
@@ -210,13 +210,14 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
             setText();
             mImgView.invalidate();
         });
+
         mAnimator.start();
         mCDAnimator.start();
     }
 
     /**
      *  adapter? => modify interface on 8/30/2021
-     * @note. 1. maybe other algs/ds needs different args to realize the animation
+     * @note. 1. called in Constructor and update
      *        so call this one in interface @setElement()
      *        2. @case DELETE. NODE DELETED BEFORE UPDATE COORD OF THE LIST, COORD WAS SAVED IN PAIR
      * @param: index. cd element, if index is -1, means no element to be CD.
@@ -277,6 +278,7 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
         for(int i = 0; i < mSeqList.size(); i++){
             canvas.drawRect(mRects.get(i), mPaintRectFill);
             canvas.drawRect(mRects.get(i), mPaintRect);
+            if (mOps == OPERATION.SET && i == mOpsIdx) continue;
             canvas.drawText(mSeqList.get(i).toString(), mRects.get(i).centerX(),
                     mRects.get(i).exactCenterY() - (mPaintText.getFontMetrics().top + mPaintText.getFontMetrics().bottom)/2, mPaintText);
         }
@@ -324,7 +326,6 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
 
     }
 
-
     @Override
     public void delete() {
         if(mSeqList.isEmpty()){
@@ -338,7 +339,6 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
         mRects.remove(mOpsIdx);
 
     }
-
 
     @Override
     public void get(int index) {
@@ -377,8 +377,4 @@ public class SeqListVisualizer extends Drawable implements AlgorithmVisualizer<I
         return PixelFormat.OPAQUE;
     }
 
-    @Override
-    public void setPath(){
-
-    }
 }

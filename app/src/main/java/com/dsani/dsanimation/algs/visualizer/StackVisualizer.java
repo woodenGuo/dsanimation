@@ -51,11 +51,6 @@ public class StackVisualizer  extends Drawable implements AlgorithmVisualizer<In
     }
 
     @Override
-    public void setPath() {
-
-    }
-
-    @Override
     public void setText() {
 
     }

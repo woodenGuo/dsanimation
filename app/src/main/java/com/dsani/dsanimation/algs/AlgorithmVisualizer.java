@@ -31,9 +31,7 @@ public interface AlgorithmVisualizer<Item> {
      * set element coordinate by @deltaX, @deltaY and @valAnimator,
      * @index element is the element on which is operated.
      */
-    public void setElement(float deltaX, float deltaY, int index, float valAnimator);
-
-    public void setPath();
+    public void setElement(float distanceX, float distanceY, int index, float valAnimator);
 
     public void setText();
 
